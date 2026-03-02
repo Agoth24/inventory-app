@@ -6,11 +6,12 @@ const bookRouter = Router();
 
 bookRouter.post("/", (req, res) => {
 	res.send(`POST request to ${req.url}`);
+    res.render("books", {})
 });
 
 bookRouter.get("/", (req, res) => {
 	const { books } = bookController.getAllBooks();
-	res.render("index", {
+	res.render("books", {
 		title: "Inventory App",
 		heading: "All Books",
 		books: books,
