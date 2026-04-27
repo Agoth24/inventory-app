@@ -1,22 +1,23 @@
 # Endpoints
 
+Resources: books, genres, authors
+
 GET /
+
 GET /books
-GET /genres
-GET /authors
-
 GET /books/:id
-GET /genres/:id
-GET /authors/:id
-
 POST /books/
-POST /genres/
-POST /authors/
-
 PUT /books/:id
-PUT /genres/:id
-PUT /authors/:id
-
 DELETE /books/:id
+
+GET /genres
+GET /genres/:id
+POST /genres/
+PUT /genres/:id
 DELETE /genres/:id
+
+GET /authors
+GET /authors/:id
+POST /authors/
+PUT /authors/:id
 DELETE /authors/:id

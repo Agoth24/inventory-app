@@ -1,4 +1,4 @@
-const db = require("../db/queries");
+const db = require("../db/bookQueries");
 
 const getAllBooks = async () => {
     return await db.findAllBooks();
