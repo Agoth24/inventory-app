@@ -18,12 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/books", bookRouter);
 app.use("/", indexRouter);
 
-/* App invocation */
-app.listen(PORT, () => {
+/* LISTENING */ 
+app.listen(PORT, (err) => {
+	if (err) throw err;
 	console.log(`Listening on port ${PORT}\nProcess: ${process.pid}`);
-});
-
-app.on("error", (err) => {
-	console.error(err);
-	process.exit(1);
 });
