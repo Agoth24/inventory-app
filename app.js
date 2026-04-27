@@ -1,6 +1,7 @@
 const express = require("express");
-const indexRouter = require("./routes/indexRouter");
-const bookRouter = require("./routes/bookRouter");
+const indexRouter = require("./routes");
+const bookRouter = require("./routes/books");
+const categoriesRouter = require("./routes/categories")
 const path = require("node:path");
 
 const app = express();
@@ -15,6 +16,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 
 /* ROUTES */
+app.use("/genres", )
 app.use("/books", bookRouter);
 app.use("/", indexRouter);
 

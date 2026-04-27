@@ -1,1 +1,1 @@
-# inventory-app
+# Book Inventory App (REST API)
