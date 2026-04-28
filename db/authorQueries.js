@@ -14,7 +14,8 @@ const getAuthorById = async (authorId) => {
 		`
         SELECT name FROM authors
         WHERE id = $1;
-        `[authorId],
+        `,
+		[authorId],
 	);
 
 	return rows[0];
