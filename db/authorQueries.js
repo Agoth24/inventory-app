@@ -3,7 +3,7 @@ const pool = require("./pool");
 // GET /authors
 const getAllAuthors = async () => {
 	const { rows } = await pool.query(`
-        SELECT * FROM authors;
+        SELECT name FROM authors;
         `);
 	return rows;
 };
@@ -12,7 +12,7 @@ const getAllAuthors = async () => {
 const getAuthorById = async (authorId) => {
 	const { rows } = await pool.query(
 		`
-        SELECT * FROM authors
+        SELECT name FROM authors
         WHERE id = $1;
         `[authorId],
 	);
