@@ -26,7 +26,7 @@ const insertAuthor = async (authorName) => {
 	const { rows } = await pool.query(
 		`
         INSERT INTO authors (name)
-        VALUES $1 RETURNING *;
+        VALUES ($1) RETURNING *;
         `,
 		[authorName],
 	);

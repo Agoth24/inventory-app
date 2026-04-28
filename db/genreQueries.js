@@ -37,7 +37,7 @@ const insertGenre = async (genreName) => {
 	const { rows } = await pool.query(
 		`
         INSERT INTO genres (name) 
-        VALUES $1 RETURNING *;
+        VALUES ($1) RETURNING *;
         `,
 		[genreName],
 	);
