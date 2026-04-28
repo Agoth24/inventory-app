@@ -18,7 +18,7 @@ const getAuthor = async (req, res) => {
 
 const createAuthor = async (req, res) => {
 	const { author } = req.body;
-	const result = await authorDB.insertAuthor({ authorName: author });
+	const result = await authorDB.insertAuthor(author);
 	if (!result) {
 		return res.status(500).json({ message: "Cannot create author" });
 	}
@@ -37,7 +37,7 @@ const updateAuthor = async (req, res) => {
 
 const deleteAuthor = async (req, res) => {
 	const { id } = req.params;
-	const result = await authorDB.deleteAuthor({ authorId: id });
+	const result = await authorDB.deleteAuthor(id);
 	if (!result) {
 		return res.status(400).json({ message: "Cannot delete author" });
 	}
