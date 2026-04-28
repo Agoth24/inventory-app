@@ -40,7 +40,7 @@ const updateBook = async (req, res) => {
 
 const deleteBook = async (req, res) => {
 	const { id } = req.params;
-	const result = await bookDB.deleteBook({ bookId: id });
+	const result = await bookDB.deleteBook(id);
 	if (!result) {
 		return res.status(400).json({ message: "Cannot delete book" });
 	}
