@@ -18,14 +18,14 @@ const getBookById = async ({ bookId }) => {
 };
 
 // POST /books/
-const insertBook = async ({ title,  genreId }) => {
+const insertBook = async ({ title }) => {
 	const { rows } = await pool.query(`
         
         `);
 	return rows[0];
 };
 // PUT /books/:id
-const updateBook = async (bookId, { title, genreId}) => {
+const updateBook = async (bookId, { title, genreName}) => {
 	const { rows } = await pool.query(`
             
         `);

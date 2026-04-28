@@ -1,8 +1,8 @@
 const express = require("express");
 const indexRouter = require("./routes");
 const bookRouter = require("./routes/books");
-const genresRouter = require("./routes/genres")
-const authorsRouter = require("./routes/authors")
+const genresRouter = require("./routes/genres");
+const authorsRouter = require("./routes/authors");
 const path = require("node:path");
 
 const app = express();
@@ -14,15 +14,16 @@ const publicPath = path.join(__dirname, "public");
 app.use(express.static(publicPath));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 /* ROUTES */
-app.use("/authors", authorsRouter)
-app.use("/genres", genresRouter)
+app.use("/authors", authorsRouter);
+app.use("/genres", genresRouter);
 app.use("/books", bookRouter);
 app.use("/", indexRouter);
 
-/* LISTENING */ 
+/* LISTENING */
 app.listen(PORT, (err) => {
 	if (err) throw err;
 	console.log(`Listening on port ${PORT}\nProcess: ${process.pid}`);
