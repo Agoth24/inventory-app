@@ -23,17 +23,28 @@ const getBookById = async (bookId) => {
 	return rows[0];
 };
 
+const getBookIdByName = async (title) => {
+        const { rows } = await pool.query(
+            `
+            SELECT id FROM books
+            WHERE title = $1;
+            `,
+            [title],
+        );
+        return rows[0]?.id;
+}
+
 // POST /books/
 const insertBook = async ({ title, genreId }) => {
 	const { rows } = await pool.query(
 		`
         INSERT INTO books (title, genre_id) 
-        VALUES ($1, $2) RETURNING *;
+        VALUES ($1, $2) RETURNING id;
         `,
 		[title, genreId],
 	);
 	// TODO: add constraint for no exact duplicates
-	return rows[0];
+	return rows[0]?.id;
 };
 
 // PUT /books/:id
@@ -44,11 +55,11 @@ const updateBook = async (bookId, { title, genreId }) => {
         SET title = $1,
             genre_id = $2
         WHERE id = $3
-        RETURNING *;
+        RETURNING id;
         `,
 		[title, genreId, bookId],
 	);
-	return rows[0];
+	return rows[0]?.id;
 };
 
 // DELETE /books/:id
@@ -57,16 +68,17 @@ const deleteBook = async (bookId) => {
 		`
         DELETE FROM books
         WHERE id = $1
-        RETURNING *;
+        RETURNING id;
         `,
 		[bookId],
 	);
-	return rows[0];
+	return rows[0]?.id;
 };
 
 module.exports = {
 	getAllBooks,
 	getBookById,
+    getBookIdByName,
 	insertBook,
 	updateBook,
 	deleteBook,

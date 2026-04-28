@@ -5,7 +5,7 @@ const getAllGenres = async () => {
 	const { rows } = await pool.query(`
         SELECT name FROM genres;
         `);
-	return rows;
+	return rows.map((row) => row.name);
 };
 
 // GET /genres/:id
@@ -18,7 +18,7 @@ const getGenreById = async (genreId) => {
 		[genreId],
 	);
 
-	return rows[0];
+	return rows[0]?.name;
 };
 
 const getGenreIdByName = async (genreName) => {
@@ -29,7 +29,7 @@ const getGenreIdByName = async (genreName) => {
         `,
 		[genreName],
 	);
-	return rows[0];
+	return rows[0]?.id;
 };
 
 // POST /genres/
@@ -37,11 +37,11 @@ const insertGenre = async (genreName) => {
 	const { rows } = await pool.query(
 		`
         INSERT INTO genres (name) 
-        VALUES ($1) RETURNING *;
+        VALUES ($1) RETURNING id;
         `,
 		[genreName],
 	);
-	return rows[0];
+	return rows[0]?.id;
 };
 
 // PUT /genres/:id
@@ -51,11 +51,11 @@ const updateGenre = async (genreId, { genreName }) => {
         UPDATE genres
         SET name = $1
         WHERE id = $2
-        RETURNING *;        
+        RETURNING id;        
         `,
 		[genreName, genreId],
 	);
-	return rows[0];
+	return rows[0]?.id;
 };
 
 // DELETE /genres/:id
@@ -64,17 +64,17 @@ const deleteGenre = async (genreId) => {
 		`
         DELETE FROM genres
         WHERE id = $1
-        RETURNING *;
+        RETURNING id;
         `,
 		[genreId],
 	);
-	return rows[0];
+	return rows[0]?.id;
 };
 
 module.exports = {
 	getAllGenres,
 	getGenreById,
-    getGenreIdByName,
+	getGenreIdByName,
 	insertGenre,
 	updateGenre,
 	deleteGenre,
