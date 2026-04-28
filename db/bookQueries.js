@@ -13,8 +13,9 @@ const getAllBooks = async () => {
 const getBookById = async (bookId) => {
 	const { rows } = await pool.query(
 		`
-        SELECT * FROM books
-        WHERE id = $1;
+        SELECT b.title AS title, g.name AS genre
+        FROM books b JOIN genres g on b.genre_id = g.id;
+        WHERE b.id = $1;
         `,
 		[bookId],
 	);
