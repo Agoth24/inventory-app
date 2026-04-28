@@ -3,7 +3,8 @@ const pool = require("./pool");
 // GET /books
 const getAllBooks = async () => {
 	const { rows } = await pool.query(`
-        SELECT * FROM books;
+        SELECT b.title AS title, g.name AS genre
+        FROM books b JOIN genres g on b.genre_id = g.id;
         `);
 	return rows;
 };
