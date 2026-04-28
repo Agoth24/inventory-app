@@ -67,7 +67,7 @@ const updateAuthor = async (authorId, { authorName }) => {
         `,
 		[authorName, authorId],
 	);
-	return rows[0];
+	return rows[0]?.id;
 };
 
 // DELETE /authors/:id
