@@ -1,8 +1,8 @@
 const express = require("express");
-const indexRouter = require("./routes");
 const bookRouter = require("./routes/books");
 const genresRouter = require("./routes/genres");
 const authorsRouter = require("./routes/authors");
+const indexRouter = require("./routes");
 const path = require("node:path");
 
 const app = express();

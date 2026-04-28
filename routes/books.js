@@ -3,11 +3,12 @@ const bookController = require("../controllers/booksController");
 
 const bookRouter = Router();
 
-bookRouter.post("/", (req, res) => {
-	res.send(`POST request to ${req.url}`);
-});
-
 bookRouter.get("/:id", bookController.getBook);
 bookRouter.get("/", bookController.getBooks);
+
+bookRouter.post("/", bookController.createBook);
+bookRouter.put("/:id", bookController.updateBook);
+
+bookRouter.delete("/:id", bookController.deleteBook);
 
 module.exports = bookRouter;

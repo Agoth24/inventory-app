@@ -24,6 +24,7 @@ const insertAuthor = async ({ authorName }) => {
         `);
 	return rows[0];
 };
+
 // PUT /authors/:id
 const updateAuthor = async (authorId, { authorName }) => {
 	const { rows } = await pool.query(`

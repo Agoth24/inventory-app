@@ -24,6 +24,7 @@ const insertBook = async ({ title }) => {
         `);
 	return rows[0];
 };
+
 // PUT /books/:id
 const updateBook = async (bookId, { title, genreName}) => {
 	const { rows } = await pool.query(`

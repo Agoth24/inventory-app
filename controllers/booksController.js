@@ -3,7 +3,7 @@ const bookDB = require("../db/bookQueries");
 const getBooks = async (req, res) => {
 	const books = await bookDB.getAllBooks();
 	if (books.length === 0) {
-		return res.status(200).json({ message: "No Books Exist" });
+		return res.status(200).json({ message: "No books exist" });
 	}
 	res.status(200).json(books);
 };
@@ -28,7 +28,10 @@ const createBook = async (req, res) => {
 const updateBook = async (req, res) => {
 	const { id } = req.params;
 	const { title, genre } = req.body;
-	const result = await bookDB.updateBook(id, { title: title, genreName: genre });
+	const result = await bookDB.updateBook(id, {
+		title: title,
+		genreName: genre,
+	});
 	if (!result) {
 		return res.status(404).json({ message: "Cannot update book" });
 	}
@@ -37,7 +40,7 @@ const updateBook = async (req, res) => {
 
 const deleteBook = async (req, res) => {
 	const { id } = req.params;
-	const result = await bookDB.deleteBook(id);
+	const result = await bookDB.deleteBook({ bookId: id });
 	if (!result) {
 		return res.status(400).json({ message: "Cannot delete book" });
 	}
