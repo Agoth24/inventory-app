@@ -40,12 +40,12 @@ const updateAuthor = async (req, res) => {
 	const { id } = req.params;
 	const { authorName } = req.body || {};
 
+    if (!(await authorDB.getAuthorById(id))) {
+        return res.status(404).json({ message: "Author doesn't exist" });
+    }
+
 	if (!authorName) {
 		return res.status(400).json({ message: "Error: missing fields" });
-	}
-
-	if (!(await authorDB.getAuthorById(id))) {
-		return res.status(404).json({ message: "Author doesn't exist" });
 	}
 
 	const result = await authorDB.updateAuthor(id, { authorName: authorName });

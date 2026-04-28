@@ -23,6 +23,10 @@ app.use("/genres", genresRouter);
 app.use("/books", bookRouter);
 app.use("/", indexRouter);
 
+app.use((req, res) => {
+    res.status(404).json({message: "Route doesn't exist. See API Documentation"})
+})
+
 /* LISTENING */
 app.listen(PORT, (err) => {
 	if (err) throw err;

@@ -71,12 +71,12 @@ const updateBook = async (req, res) => {
 	const { id } = req.params;
 	const { title, genreName } = req.body || {};
 
+    if (!(await bookDB.getBookById(id))) {
+        return res.status(404).json({ message: "Book doesn't exist" });
+    }
+
 	if (!title || !genreName) {
 		return res.status(400).json({ message: "Error: missing fields" });
-	}
-
-	if (!bookDB.getBookById(id)) {
-		return res.status(404).json({ message: "Book doesn't exist" });
 	}
 
 	let genreId = await genreDB.getGenreIdByName(genreName);
@@ -100,11 +100,12 @@ const updateBook = async (req, res) => {
 // Removes a book from the book table
 const deleteBook = async (req, res) => {
 	const { id } = req.params;
-	const result = await bookDB.deleteBook(id);
-
-    if (!bookDB.getBookById(id)) {
-            return res.status(404).json({ message: "Book doesn't exist" });
-        }
+    
+    if (!(await bookDB.getBookById(id))) {
+        return res.status(404).json({ message: "Book doesn't exist" });
+    }
+    
+    const result = await bookDB.deleteBook(id);
 
 	if (!result) {
 		return res.status(400).json({ message: "Cannot delete book" });

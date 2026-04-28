@@ -40,12 +40,12 @@ const updateGenre = async (req, res) => {
 	const { id } = req.params;
 	const { genreName } = req.body || {};
 
+    if (!(await genreDB.getGenreById(id))) {
+        return res.status(404).json({ message: "Genre doesn't exist" });
+    }
+
 	if (!genreName) {
 		return res.status(400).json({ message: "Error: missing fields" });
-	}
-
-	if (!(await genreDB.getGenreById(id))) {
-		return res.status(404).json({ message: "Genre doesn't exist" });
 	}
 
 	const result = await genreDB.updateGenre(id, { genreName: genreName });
