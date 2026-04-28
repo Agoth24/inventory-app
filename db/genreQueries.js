@@ -3,7 +3,7 @@ const pool = require("./pool");
 // GET /genres
 const getAllGenres = async () => {
 	const { rows } = await pool.query(`
-        SELECT * FROM genres;
+        SELECT name FROM genres;
         `);
 	return rows;
 };
@@ -12,12 +12,23 @@ const getAllGenres = async () => {
 const getGenreById = async (genreId) => {
 	const { rows } = await pool.query(
 		`
-        SELECT * FROM genres
+        SELECT name FROM genres
         WHERE id = $1
         `,
 		[genreId],
 	);
 
+	return rows[0];
+};
+
+const getGenreIdByName = async (genreName) => {
+	const { rows } = await pool.query(
+		`
+        SELECT id FROM genres
+        WHERE name = $1;
+        `,
+		[genreName],
+	);
 	return rows[0];
 };
 
@@ -63,6 +74,7 @@ const deleteGenre = async (genreId) => {
 module.exports = {
 	getAllGenres,
 	getGenreById,
+    getGenreIdByName,
 	insertGenre,
 	updateGenre,
 	deleteGenre,
