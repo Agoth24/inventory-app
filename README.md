@@ -1,4 +1,4 @@
-# Book Inventory App
+# BLOOM Inventory REST API
 
 A small Express and PostgreSQL REST API for managing books, genres, and authors.
 
@@ -7,6 +7,7 @@ A small Express and PostgreSQL REST API for managing books, genres, and authors.
 - Node.js
 - Express
 - PostgreSQL
+- `zod`
 - `pg`
 - `dotenv`
 - EJS
@@ -60,7 +61,32 @@ All request bodies should be sent as JSON with this header:
 Content-Type: application/json
 ```
 
-Empty collection responses use `[]`. Failed single-resource operations return `{}` with the appropriate error status code.
+Empty collection responses use `[]`. Missing single resources return `{}` with a `404` status code.
+
+Request bodies and route IDs are validated with Zod before they reach the controllers. Route IDs must be positive integers. Required string fields are trimmed and must not be empty.
+
+Validation failures return `400` with details:
+
+```json
+{
+	"status": "error",
+	"message": "Validation Failed",
+	"errors": [
+		{
+			"field": "genreName",
+			"message": "Genre name is required"
+		}
+	]
+}
+```
+
+Unknown routes return `404`:
+
+```json
+{
+	"message": "Route doesn't exist. See API Documentation"
+}
+```
 
 ## Books
 
@@ -119,7 +145,7 @@ Required fields:
 
 Optional fields:
 
-- `authorName`
+- `authorName` must not be empty if included
 
 Body:
 
