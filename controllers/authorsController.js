@@ -11,7 +11,7 @@ const getAuthors = async (req, res) => {
 };
 
 const getAuthor = async (req, res) => {
-	const authorId = await authorDB.getAuthorById(req.params.id);
+	const author = await authorDB.getAuthorById(req.params.id);
 
 	if (!author) {
 		return res.status(404).json({});
@@ -21,11 +21,7 @@ const getAuthor = async (req, res) => {
 };
 
 const createAuthor = async (req, res) => {
-	const { authorName } = req.body || {};
-
-	if (!authorName) {
-		return res.status(400).json({});
-	}
+	const { authorName } = req.body;
 
 	const insertedAuthor = await authorDB.insertAuthor(authorName);
 
@@ -38,14 +34,10 @@ const createAuthor = async (req, res) => {
 
 const updateAuthor = async (req, res) => {
 	const { id } = req.params;
-	const { authorName } = req.body || {};
+	const { authorName } = req.body;
 
 	if (!(await authorDB.getAuthorById(id))) {
 		return res.status(404).json({});
-	}
-
-	if (!authorName) {
-		return res.status(400).json({});
 	}
 
 	const updatedAuthor = await authorDB.updateAuthor(id, {

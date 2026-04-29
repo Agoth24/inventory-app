@@ -26,11 +26,7 @@ const getBook = async (req, res) => {
 
 // Creates a book in the book table and related tables
 const createBook = async (req, res) => {
-	const { title, genreName, authorName } = req.body || {};
-
-	if (!title || !genreName) {
-		return res.status(400).json({});
-	}
+	const { title, genreName, authorName } = req.body;
 
 	let genre = await genreDB.getGenreByName(genreName);
 
@@ -70,14 +66,10 @@ const createBook = async (req, res) => {
 // Updates a book's title and genre ID
 const updateBook = async (req, res) => {
 	const { id } = req.params;
-	const { title, genreName } = req.body || {};
+	const { title, genreName } = req.body;
 
 	if (!(await bookDB.getBookById(id))) {
 		return res.status(404).json({});
-	}
-
-	if (!title || !genreName) {
-		return res.status(400).json({});
 	}
 
 	let genre = await genreDB.getGenreByName(genreName);
@@ -105,6 +97,7 @@ const deleteBook = async (req, res) => {
 	const { id } = req.params;
 
 	const book = await bookDB.getBookById(id);
+    
 	if (!book) {
 		return res.status(404).json({});
 	}

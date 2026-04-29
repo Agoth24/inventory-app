@@ -21,11 +21,7 @@ const getGenre = async (req, res) => {
 };
 
 const createGenre = async (req, res) => {
-	const { genreName } = req.body || {};
-
-	if (!genreName) {
-		return res.status(400).json({});
-	}
+	const { genreName } = req.body;
 
 	const insertedGenre = await genreDB.insertGenre(genreName);
 
@@ -38,14 +34,10 @@ const createGenre = async (req, res) => {
 
 const updateGenre = async (req, res) => {
 	const { id } = req.params;
-	const { genreName } = req.body || {};
+	const { genreName } = req.body;
 
 	if (!(await genreDB.getGenreById(id))) {
 		return res.status(404).json({});
-	}
-
-	if (!genreName) {
-		return res.status(400).json({});
 	}
 
 	const updatedGenre = await genreDB.updateGenre(id, {
