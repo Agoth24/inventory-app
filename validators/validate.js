@@ -6,7 +6,7 @@ const validate =
 		if (!result.success) {
 			return res.status(400).json({
 				status: "error",
-				message: "Error Validation Failed",
+				message: "Validation Failed",
 				errors: result.error.issues.map((e) => ({
 					field: e.path[0],
 					message: e.message,

@@ -11,7 +11,7 @@ const getAuthors = async (req, res) => {
 };
 
 const getAuthor = async (req, res) => {
-	const author = await authorDB.getAuthorById(req.params.id);
+	const authorId = await authorDB.getAuthorById(req.params.id);
 
 	if (!author) {
 		return res.status(404).json({});
