@@ -60,6 +60,8 @@ All request bodies should be sent as JSON with this header:
 Content-Type: application/json
 ```
 
+Empty collection responses use `[]`. Failed single-resource operations return `{}` with the appropriate error status code.
+
 ## Books
 
 ### Get All Books
@@ -73,8 +75,10 @@ Returns an array of books:
 ```json
 [
 	{
+		"id": 1,
 		"title": "Dune",
-		"genre": "Science Fiction"
+		"genreId": 1,
+		"genreName": "Science Fiction"
 	}
 ]
 ```
@@ -95,8 +99,10 @@ Returns:
 
 ```json
 {
+	"id": 1,
 	"title": "Dune",
-	"genre": "Science Fiction"
+	"genreId": 1,
+	"genreName": "Science Fiction"
 }
 ```
 
@@ -131,7 +137,10 @@ Success response:
 
 ```json
 {
-	"message": "Successfully created book"
+	"id": 1,
+	"title": "Dune",
+	"genreId": 1,
+	"genreName": "Science Fiction"
 }
 ```
 
@@ -161,7 +170,10 @@ Success response:
 
 ```json
 {
-	"message": "Successfully updated book"
+	"id": 1,
+	"title": "Dune Messiah",
+	"genreId": 1,
+	"genreName": "Science Fiction"
 }
 ```
 
@@ -181,7 +193,10 @@ Success response:
 
 ```json
 {
-	"message": "Successfully deleted book"
+	"id": 1,
+	"title": "Dune",
+	"genreId": 1,
+	"genreName": "Science Fiction"
 }
 ```
 
@@ -193,12 +208,18 @@ Success response:
 GET /genres
 ```
 
-Returns an array of genre names:
+Returns an array of genre objects:
 
 ```json
 [
-	"Science Fiction",
-	"Fantasy"
+	{
+		"id": 1,
+		"genreName": "Science Fiction"
+	},
+	{
+		"id": 2,
+		"genreName": "Fantasy"
+	}
 ]
 ```
 
@@ -217,7 +238,10 @@ GET /genres/1
 Returns:
 
 ```json
-"Science Fiction"
+{
+	"id": 1,
+	"genreName": "Science Fiction"
+}
 ```
 
 ### Create a Genre
@@ -242,7 +266,8 @@ Success response:
 
 ```json
 {
-	"message": "Successfully created genre"
+	"id": 1,
+	"genreName": "Science Fiction"
 }
 ```
 
@@ -268,7 +293,8 @@ Success response:
 
 ```json
 {
-	"message": "Successfully updated genre"
+	"id": 1,
+	"genreName": "Speculative Fiction"
 }
 ```
 
@@ -288,7 +314,8 @@ Success response:
 
 ```json
 {
-	"message": "Successfully deleted genre"
+	"id": 1,
+	"genreName": "Science Fiction"
 }
 ```
 
@@ -300,12 +327,18 @@ Success response:
 GET /authors
 ```
 
-Returns an array of author names:
+Returns an array of author objects:
 
 ```json
 [
-	"Frank Herbert",
-	"Ursula K. Le Guin"
+	{
+		"id": 1,
+		"authorName": "Frank Herbert"
+	},
+	{
+		"id": 2,
+		"authorName": "Ursula K. Le Guin"
+	}
 ]
 ```
 
@@ -324,7 +357,10 @@ GET /authors/1
 Returns:
 
 ```json
-"Frank Herbert"
+{
+	"id": 1,
+	"authorName": "Frank Herbert"
+}
 ```
 
 ### Create an Author
@@ -349,7 +385,8 @@ Success response:
 
 ```json
 {
-	"message": "Successfully created author"
+	"id": 1,
+	"authorName": "Frank Herbert"
 }
 ```
 
@@ -375,7 +412,8 @@ Success response:
 
 ```json
 {
-	"message": "Successfully updated author"
+	"id": 1,
+	"authorName": "Franklin Herbert"
 }
 ```
 
@@ -395,7 +433,8 @@ Success response:
 
 ```json
 {
-	"message": "Successfully deleted author"
+	"id": 1,
+	"authorName": "Frank Herbert"
 }
 ```
 
