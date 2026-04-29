@@ -5,12 +5,22 @@ const authorDB = require("../db/authorQueries");
 // Returns an array of book objects
 const getBooks = async (req, res) => {
 	const books = await bookDB.getAllBooks();
+
+	if (books.length === 0) {
+		return res.status(200).json([]);
+	}
+
 	res.status(200).json(books);
 };
 
 // Returns a book object
 const getBook = async (req, res) => {
 	const book = await bookDB.getBookById(req.params.id);
+
+	if (!book) {
+		return res.status(404).json({});
+	}
+
 	res.status(200).json(book);
 };
 
@@ -18,42 +28,43 @@ const getBook = async (req, res) => {
 const createBook = async (req, res) => {
 	const { title, genreName, authorName } = req.body || {};
 
-	// Not possible to create book
 	if (!title || !genreName) {
-		return res.status(400).json({ message: "Error: missing fields" });
+		return res.status(400).json({});
 	}
 
-	let genreId = await genreDB.getGenreByName(genreName);
-    // PICK UP HERE
-	if (!genreId) {
+	let genre = await genreDB.getGenreByName(genreName);
+
+	if (!genre) {
 		// Add the genre to the db
-		genreId = await genreDB.insertGenre(genreName);
+		genre = await genreDB.insertGenre(genreName);
 	}
 
-	const insertedBookId = await bookDB.insertBook({
+	let insertedBook = await bookDB.insertBook({
 		title: title,
-		genreId: genreId,
+		genreId: genre.id,
 	});
 
-	if (!insertedBookId) {
-		return res.status(500).json({ message: "Cannot create book" });
+	if (!insertedBook) {
+		return res.status(500).json({});
 	}
 
 	// Add a row to the book_authors table
 	if (authorName) {
-		let authorId = await authorDB.getAuthorByName(authorName);
+		let author = await authorDB.getAuthorByName(authorName);
 
-		if (!authorId) {
-			authorId = await authorDB.insertAuthor(authorName);
+		if (!author) {
+			author = await authorDB.insertAuthor(authorName);
 		}
 
 		await authorDB.insertAuthorOfBook({
-			bookId: insertedBookId,
-			authorId: authorId,
+			bookId: insertedBook.id,
+			authorId: author.id,
 		});
 	}
 
-	res.status(201).json({ message: "Successfully created book" });
+	insertedBook = await bookDB.getBookById(insertedBook.id);
+
+	res.status(201).json(insertedBook);
 };
 
 // Updates a book's title and genre ID
@@ -61,47 +72,50 @@ const updateBook = async (req, res) => {
 	const { id } = req.params;
 	const { title, genreName } = req.body || {};
 
-    if (!(await bookDB.getBookById(id))) {
-        return res.status(404).json({ message: "Book doesn't exist" });
-    }
+	if (!(await bookDB.getBookById(id))) {
+		return res.status(404).json({});
+	}
 
 	if (!title || !genreName) {
-		return res.status(400).json({ message: "Error: missing fields" });
+		return res.status(400).json({});
 	}
 
-	let genreId = await genreDB.getGenreByName(genreName);
+	let genre = await genreDB.getGenreByName(genreName);
 
-	if (!genreId) {
-		genreId = await genreDB.insertGenre(genreName);
+	if (!genre) {
+		genre = await genreDB.insertGenre(genreName);
 	}
 
-	const result = await bookDB.updateBook(id, {
+	let updatedBook = await bookDB.updateBook(id, {
 		title: title,
-		genreId: genreId,
+		genreId: genre.id,
 	});
 
-	if (!result) {
-		return res.status(404).json({ message: "Cannot update book" });
+	if (!updatedBook) {
+		return res.status(500).json({});
 	}
 
-	res.status(200).json({ message: "Successfully updated book" });
+	updatedBook = await bookDB.getBookById(updatedBook.id);
+
+	res.status(200).json(updatedBook);
 };
 
 // Removes a book from the book table
 const deleteBook = async (req, res) => {
 	const { id } = req.params;
-    
-    if (!(await bookDB.getBookById(id))) {
-        return res.status(404).json({ message: "Book doesn't exist" });
-    }
-    
-    const result = await bookDB.deleteBook(id);
 
-	if (!result) {
-		return res.status(400).json({ message: "Cannot delete book" });
+	const book = await bookDB.getBookById(id);
+	if (!book) {
+		return res.status(404).json({});
 	}
 
-	res.status(200).json({ message: "Successfully deleted book" });
+	const deletedBook = await bookDB.deleteBook(id);
+
+	if (!deletedBook) {
+		return res.status(500).json({});
+	}
+
+	res.status(200).json(book);
 };
 
 module.exports = {

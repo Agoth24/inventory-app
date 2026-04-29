@@ -4,7 +4,7 @@ const getAuthors = async (req, res) => {
 	const authors = await authorDB.getAllAuthors();
 
 	if (authors.length === 0) {
-		return res.status(200).json({ message: "No authors exist" });
+		return res.status(200).json([]);
 	}
 
 	res.status(200).json(authors);
@@ -14,7 +14,7 @@ const getAuthor = async (req, res) => {
 	const author = await authorDB.getAuthorById(req.params.id);
 
 	if (!author) {
-		return res.status(404).json({ message: "Author not found" });
+		return res.status(404).json({});
 	}
 
 	res.status(200).json(author);
@@ -24,53 +24,55 @@ const createAuthor = async (req, res) => {
 	const { authorName } = req.body || {};
 
 	if (!authorName) {
-		return res.status(400).json({ message: "Error: missing fields" });
+		return res.status(400).json({});
 	}
 
-	const result = await authorDB.insertAuthor(authorName);
+	const insertedAuthor = await authorDB.insertAuthor(authorName);
 
-	if (!result) {
-		return res.status(500).json({ message: "Cannot create author" });
+	if (!insertedAuthor) {
+		return res.status(500).json({});
 	}
 
-	res.status(201).json({ message: "Successfully created author" });
+	res.status(201).json(insertedAuthor);
 };
 
 const updateAuthor = async (req, res) => {
 	const { id } = req.params;
 	const { authorName } = req.body || {};
 
-    if (!(await authorDB.getAuthorById(id))) {
-        return res.status(404).json({ message: "Author doesn't exist" });
-    }
+	if (!(await authorDB.getAuthorById(id))) {
+		return res.status(404).json({});
+	}
 
 	if (!authorName) {
-		return res.status(400).json({ message: "Error: missing fields" });
+		return res.status(400).json({});
 	}
 
-	const result = await authorDB.updateAuthor(id, { authorName: authorName });
+	const updatedAuthor = await authorDB.updateAuthor(id, {
+		authorName: authorName,
+	});
 
-	if (!result) {
-		return res.status(404).json({ message: "Cannot update author" });
+	if (!updatedAuthor) {
+		return res.status(500).json({});
 	}
 
-	res.status(200).json({ message: "Successfully updated author" });
+	res.status(200).json(updatedAuthor);
 };
 
 const deleteAuthor = async (req, res) => {
 	const { id } = req.params;
 
 	if (!(await authorDB.getAuthorById(id))) {
-		return res.status(404).json({ message: "Author doesn't exist" });
-	}
-    
-	const result = await authorDB.deleteAuthor(id);
-
-	if (!result) {
-		return res.status(400).json({ message: "Cannot delete author" });
+		return res.status(404).json({});
 	}
 
-	res.status(200).json({ message: "Successfully deleted author" });
+	const deletedAuthor = await authorDB.deleteAuthor(id);
+
+	if (!deletedAuthor) {
+		return res.status(500).json({});
+	}
+
+	res.status(200).json(deletedAuthor);
 };
 
 module.exports = {
