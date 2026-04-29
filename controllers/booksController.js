@@ -5,22 +5,12 @@ const authorDB = require("../db/authorQueries");
 // Returns an array of book objects
 const getBooks = async (req, res) => {
 	const books = await bookDB.getAllBooks();
-
-	if (books.length === 0) {
-		return res.status(200).json({ message: "No books exist" });
-	}
-
 	res.status(200).json(books);
 };
 
 // Returns a book object
 const getBook = async (req, res) => {
 	const book = await bookDB.getBookById(req.params.id);
-
-	if (!book) {
-		return res.status(404).json({ message: "Book not found" });
-	}
-
 	res.status(200).json(book);
 };
 
@@ -34,7 +24,7 @@ const createBook = async (req, res) => {
 	}
 
 	let genreId = await genreDB.getGenreByName(genreName);
-
+    // PICK UP HERE
 	if (!genreId) {
 		// Add the genre to the db
 		genreId = await genreDB.insertGenre(genreName);
