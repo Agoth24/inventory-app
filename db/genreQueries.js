@@ -3,33 +3,36 @@ const pool = require("./pool");
 // GET /genres
 const getAllGenres = async () => {
 	const { rows } = await pool.query(`
-        SELECT name FROM genres;
+        SELECT id, name as "genreName" 
+        FROM genres;
         `);
-	return rows.map((row) => row.name);
+	return rows;
 };
 
 // GET /genres/:id
 const getGenreById = async (genreId) => {
 	const { rows } = await pool.query(
 		`
-        SELECT name FROM genres
-        WHERE id = $1
+        SELECT id, name as "genreName" 
+        FROM genres
+        WHERE id = $1;
         `,
 		[genreId],
 	);
 
-	return rows[0]?.name;
+	return rows[0];
 };
 
-const getGenreIdByName = async (genreName) => {
+const getGenreByName = async (genreName) => {
 	const { rows } = await pool.query(
 		`
-        SELECT id FROM genres
+        SELECT id, name as "genreName" 
+        FROM genres
         WHERE name = $1;
         `,
 		[genreName],
 	);
-	return rows[0]?.id;
+	return rows[0];
 };
 
 // POST /genres/
@@ -37,11 +40,11 @@ const insertGenre = async (genreName) => {
 	const { rows } = await pool.query(
 		`
         INSERT INTO genres (name) 
-        VALUES ($1) RETURNING id;
+        VALUES ($1) RETURNING id, name as "genreName";
         `,
 		[genreName],
 	);
-	return rows[0]?.id;
+	return rows[0];
 };
 
 // PUT /genres/:id
@@ -51,11 +54,11 @@ const updateGenre = async (genreId, { genreName }) => {
         UPDATE genres
         SET name = $1
         WHERE id = $2
-        RETURNING id;        
+        RETURNING id, name as "genreName";
         `,
 		[genreName, genreId],
 	);
-	return rows[0]?.id;
+	return rows[0];
 };
 
 // DELETE /genres/:id
@@ -64,17 +67,17 @@ const deleteGenre = async (genreId) => {
 		`
         DELETE FROM genres
         WHERE id = $1
-        RETURNING id;
+        RETURNING id, name as "genreName";
         `,
 		[genreId],
 	);
-	return rows[0]?.id;
+	return rows[0];
 };
 
 module.exports = {
 	getAllGenres,
 	getGenreById,
-	getGenreIdByName,
+	getGenreByName,
 	insertGenre,
 	updateGenre,
 	deleteGenre,

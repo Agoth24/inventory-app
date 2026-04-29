@@ -33,7 +33,7 @@ const createBook = async (req, res) => {
 		return res.status(400).json({ message: "Error: missing fields" });
 	}
 
-	let genreId = await genreDB.getGenreIdByName(genreName);
+	let genreId = await genreDB.getGenreByName(genreName);
 
 	if (!genreId) {
 		// Add the genre to the db
@@ -51,7 +51,7 @@ const createBook = async (req, res) => {
 
 	// Add a row to the book_authors table
 	if (authorName) {
-		let authorId = await authorDB.getAuthorIdByName(authorName);
+		let authorId = await authorDB.getAuthorByName(authorName);
 
 		if (!authorId) {
 			authorId = await authorDB.insertAuthor(authorName);
@@ -79,7 +79,7 @@ const updateBook = async (req, res) => {
 		return res.status(400).json({ message: "Error: missing fields" });
 	}
 
-	let genreId = await genreDB.getGenreIdByName(genreName);
+	let genreId = await genreDB.getGenreByName(genreName);
 
 	if (!genreId) {
 		genreId = await genreDB.insertGenre(genreName);
